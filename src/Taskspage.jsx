@@ -24,14 +24,20 @@ function Todolist(){
     const[date, setDate]=useState(today)
     const navigate=useNavigate();
 
+    /*NEW STATE TO TOGGLE BETWEEN TASKS AND INCOMPLETE TASKS*/
+    const [displayedTasks, setDisplayedTasks]=useState('todo')
+
     const selectedDate=yyyymmddEAT(date);
     const presentDate=today.toISOString().split("T")[0];
     
     /*ALL TASKS FOR THE SELECTED DATE*/
-    const tasksforDate=state.ulTasks.filter((myTask)=>yyyymmddEAT(new Date(myTask.date))===selectedDate)
+    const tasksforDate=state.ulTasks.filter((myTask)=>
+        yyyymmddEAT(new Date(myTask.date))===selectedDate &&
+        yyyymmddEAT(new Date(myTask.date))>=presentDate)
 
     /*ALL INCOMPLETE TASKS*/
-    const incompleteTasks=state.ulTasks.filter((task)=>!task.completed && yyyymmddEAT(new Date(task.date))<presentDate)
+    const incompleteTasks=state.ulTasks.filter(
+        (task)=>!task.completed && yyyymmddEAT(new Date(task.date))<presentDate)
 
 
     function toggleCompleted(taskIndex){
@@ -50,6 +56,9 @@ function Todolist(){
             ulTasks:remainingTasks
         })
     };
+
+    //DECIDE WHAT TO DISPLAY BASED ON BUTTON
+    const visibleTasks=displayedTasks==="todo"? tasksforDate:incompleteTasks;
     
     return(
         <div>
@@ -66,6 +75,7 @@ function Todolist(){
                     onChange={setDate} 
                     value={date}
                     tileClassName={({date})=>{
+                        //DATE WITH TASKS
                         const tasksdate= yyyymmddEAT(date); 
                         const taskexists=state.ulTasks.some(task=>task.date===tasksdate);
                         return(
@@ -78,12 +88,14 @@ function Todolist(){
                     <button type="button" className="button todo" onClick={()=>setDisplayedTasks("todo")}>
                         To Do
                     </button>
-                    <button type="button" className="button incomplete" onClick={()=>detDisplayedTasks("incomplete")} >
+                    <button type="button" className="button incomplete" onClick={()=>setDisplayedTasks("incomplete")} >
                         Incomplete
                     </button>
                 </div>
+
+                {/*SELECTED DAY TASKS*/}
                 <ol className="task-list">
-                    {tasksforDate.map((myTask, index)=>{
+                    {visibleTasks.map((myTask, index)=>{
                         const taskIndex=state.ulTasks.findIndex((t)=> t.task === myTask.task && t.date === myTask.date)
                         return(
                             <li key={index} className="task-item">
@@ -98,6 +110,7 @@ function Todolist(){
                                 }}
                             >
                                 {myTask.task}
+                                {displayedTasks==="incomplete" && ` - ${myTask.date}`}
                             </span>
                             <button id="delete-btn" onClick={()=>deleteTask(taskIndex)} type="button"><FaTrash /></button>
                         </li>
