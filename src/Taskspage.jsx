@@ -85,10 +85,18 @@ function Todolist(){
                 />
                 <h3>Today's Task</h3>
                 <div className="btn">
-                    <button type="button" className="button todo" onClick={()=>setDisplayedTasks("todo")}>
+                    <button
+                        type="button" 
+                        className={`button todo ${displayedTasks === "todo"? "active" : ""}`}
+                        onClick={()=>setDisplayedTasks("todo")}
+                    >
                         To Do
                     </button>
-                    <button type="button" className="button incomplete" onClick={()=>setDisplayedTasks("incomplete")} >
+                    <button 
+                        type="button" 
+                        className={`button incomplete ${displayedTasks === "incomplete" ? "active" : ""}`} 
+                        onClick={()=>setDisplayedTasks("incomplete")}
+                    >
                         Incomplete
                     </button>
                 </div>

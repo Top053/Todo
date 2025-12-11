@@ -3,7 +3,6 @@
     margin: 0 auto;
     padding: 20px;
     width: 100%;
-    background-color: brown;
 }
 #FaPlus{
     display: block;
@@ -65,13 +64,27 @@ label{
     width: 180px;
 }
 .button.todo{
-    background: hsla(249, 40%, 40%, 1.0);
+    background:hsla(249,32%,44%,0.3) ;
     color: white;
+    transition: 0.3s ease;
+}
+.button.todo.active{
+    background: hsla(249, 75%, 27%, 0.938);
+}
+.button.todo:hover{
+    background:hsla(249, 75%, 27%, 0.938) ;
 }
 .button.incomplete{
-    background: hsla(10, 90%, 40%, 0.3);
+    background: hsla(0, 60%, 61%, 0.897);
     color: white;
     margin-left: auto;
+    transition: 0.3s ease;
+}
+.button.incomplete.active{
+    background:hsla(356, 93%, 46%, 0.817) ;
+}
+.button.incomplete:hover{
+    background:hsla(356, 93%, 46%, 0.817) ;
 }
 ol{
     list-style: none;
