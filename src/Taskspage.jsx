@@ -28,12 +28,22 @@ function Todolist(){
     const [displayedTasks, setDisplayedTasks]=useState('todo')
 
     const selectedDate=yyyymmddEAT(date);
-    const presentDate=today.toISOString().split("T")[0];
+    const presentDate=new Date().toISOString().split("T")[0];
+    const selectedpastDate=selectedDate < presentDate;
     
     /*ALL TASKS FOR THE SELECTED DATE*/
-    const tasksforDate=state.ulTasks.filter((myTask)=>
-        yyyymmddEAT(new Date(myTask.date))===selectedDate &&
-        yyyymmddEAT(new Date(myTask.date))>=presentDate)
+    const tasksforDate=state.ulTasks.filter(myTask=>{
+        const taskDate=yyyymmddEAT(new Date(myTask.date))
+
+        if(taskDate !== selectedDate)return false;
+
+        //Only show completed tasks if date selected is past
+        if(selectedpastDate){
+            return task.completed;
+        }
+        //Show all tasks if date selected is today or later
+        return true;
+    })
 
     /*ALL INCOMPLETE TASKS*/
     const incompleteTasks=state.ulTasks.filter(
